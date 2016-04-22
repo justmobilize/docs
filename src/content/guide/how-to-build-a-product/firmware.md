@@ -91,11 +91,17 @@ There are two main types of devices you should add to your product:
 _before_ they are flashed with a firmware binary containing your
 Product's ID.**
 
-To add devices to your product, click on the Devices icon in your product sidebar, then click on the "Import" button.
+### Importing via the Dashboard
+
+To add devices to your product, visit your [Particle
+Dashboard](https://dashboard.particle.io), and
+navigate to your Product's view.
+
+Click on the Devices icon in your product sidebar, then click on the "Import" button.
 
 ![Your product's devices](/assets/images/devices-page.png)
 
-To allow you to import devices in bulk, we allow you to upload a file
+To allow you to import devices in bulk, you can upload a file
 containing multiple device IDs. Create a `.txt` file that contains all
 of the IDs of devices that you would like to import into your product,
 one on each line. [Not sure what your device ID
@@ -111,8 +117,6 @@ is](http://localhost:8080/reference/cli/#particle-identify)?
 
 Where each line is one Device ID. Once you have your file ready, drop it onto the file selector in the import devices modal. Before clicking import, note the checkbox that says *Force imported devices to switch to this product*.
 
-![Import devices modal](/assets/images/import-devices.png)
-
 Checking this checkbox will signal to the Particle cloud that regardless
 of which Product ID is reported by the device's firmware when it comes
 online next, it should be treated as your product. Your test devices are
@@ -122,7 +126,7 @@ When you do a real manufacturing run and import those devices into the
 dashboard, you will not need to check this box. This is because your
 devices will receive firmware with your Product ID directly on the manufacturing line.
 
-## Product Privileges
+### Product Privileges
 
 You've successfully added devices to your product. But what does that
 really mean in terms of behavior?
@@ -141,12 +145,17 @@ device in the cloud and the Product ID reported by the device in firmware.
 
 ## Flashing Devices with Product Firmware
 
-In order to ensure that proper Product ID matching, you'll need to flash
-your devices with firmware compiled with your Product's ID.
+In order to ensure that proper Product ID matching, your devices should
+run your product's firmware, complete with your Product ID compiled in
+the binary.
 
 ### Preparing a binary
 
-Click the Firmware icon in the left sidebar to get started. This will direct you to your product's firmware page, your centralized hub for viewing and managing firmware for your product's devices. If you haven't yet uploaded any firmware for this product, your page will look like this:
+To get started, click the Firmware icon in the left sidebar of your
+product's dashboard to get started. This will direct you to your product's
+firmware page, your centralized hub for viewing and managing firmware for your
+product's devices. If you haven't yet uploaded any firmware for this product,
+your page will look like this:
 
 ![Firmware page](/assets/images/firmware-page.png)
 
@@ -199,7 +208,7 @@ Once you have a binary ready to go, it's time to upload it to the dashboard!
 
 ### Uploading firmware
 
-Back on the firmware page, click on the **Upload** button in the top-right corner of the page. This will launch the upload firmware modal:
+Back on the firmware page of the Dashboard, click on the **Upload** button in the top-right corner of the page. This will launch the upload firmware modal:
 
 ![Upload firmware](/assets/images/upload-firmware.png)
 
@@ -211,10 +220,21 @@ A few things to keep in mind here:
 
 Click upload. Congrats! You've uploaded your first version of product firmware! You should now see it appear in your list of firmware versions.
 
+### Flashing firmware via the dashboard
+
+On the devices page, find one of your test devices in the list of devices and click on the row. A dropdown will appear, populated with each of the firmware versions available for that product. For now, this dropdown may only have one available option (the firmware you just uploaded). Select your firmware from the list.
+
+There are two action buttons available: **Lock and flash now**, and **Lock and flash on reset**. Both options involve "locking" a device to a firmware version. This will force the device to download and run the desired firmware version. Once the device receives and runs that firmware, it will not receive any more OTA updates even if a new firmware version is released. **Lock and flash now** will trigger an immediate OTA of the device to the desired firmware version (only available if the device is currently online). **Lock and flash on reset** will only trigger the OTA the next time the device comes online. If you do not have physical access to the device, it may be a good idea to flash on reset to avoid disrupting any current firmware running on the device.
+
+![Lock a device](/assets/images/lock-firmware-version.png)
+
+Once at least one device is successfully running your new firmware, you
+will now have the ability to [release](#releasing-firmware) that version of firmware back on the Firmware page. Get into the habit of following this process as you continue to iterate and prepare new versions of firmware for your product!
+
 ![Product firmware version](/assets/images/product-firmware.png)
 <p class="caption">Your firmware version now appears in your list of available binaries</p>
 
-### Releasing firmware
+## Releasing firmware
 
 Time to flash that shiny new binary to some devices! Notice that when you hover over a version of firmware, you have the ability to **Release firmware** (<i class="ion-star"></i>). *Releasing* firmware sets that binary as the **preferred firmware version** for all devices reporting as your product. Unless set individually, any device that does not report this released version of firmware will **automatically download and run it** next time it comes online.
 
@@ -228,32 +248,29 @@ However, releasing firmware also presents tremendous risk. The last thing you wo
 ### Recommended development flow
 
 
-To get the firmware running on a device, head to your devices page by clicking on the devices icon in the sidebar (<i class="im-devices-icon"></i>). Before flashing your device, it's important to first understand the recommended development flow for managing firmware for a product. This flow is designed to minimize risk when deploying new firmware to devices. As discussed earlier, you should start each cycle of firmware rollout by flashing your firmware to your *test group* of devices. Your test devices should be physically available to you and/or your team for testing purposes. Once you have thoroughly tested the new firmware on your test group and fixed any bugs, you can then release the firmware to all other devices. This signals to the cloud that every device should be running the new firmware, and will trigger an auto-update to this version unless otherwise specified.
-
-### Test Devices
+To get the firmware running on a device, head to your devices page by
+clicking on the devices icon in the sidebar (<i
+class="im-devices-icon"></i>). Before flashing your device, it's
+important to first understand the recommended development flow for
+managing firmware for a product. This flow is designed to minimize risk
+when deploying new firmware to devices. You should start each cycle of
+firmware rollout by flashing your firmware to a group of *test devices*.
 
 Your test devices will serve as the guinea pigs for new versions of
 product firmware. You should get into the habit of uploading a new
 version of firmware to your product, and flashing it to your test group
 to ensure your code is working as expected before rolling the firmware
-out to the masses. This too will be covered more in-depth in the [rollout
-firmware](#flashing-devices-with-product-firmware) section below.
+out to the masses. Your test devices should be physically available to
+you and/or your team for testing purposes.
 
-### Production Devices
-
-Your production devices represent units that are out in the field. For
-optimal
+Once you have thoroughly tested the new firmware on your test group and fixed any bugs, you
+can then release the firmware to all other devices. This signals to the
+cloud that every device should be running the new firmware, and will
+trigger an auto-update to this version unless otherwise specified.
 
 ![Release firmware flow](/assets/images/release-schedule.png)
 <p class="caption">The recommended flow for managing firmware</p>
 
-On the devices page, find one of your test devices in the list of devices and click on the row. A dropdown will appear, populated with each of the firmware versions available for that product. For now, this dropdown may only have one available option (the firmware you just uploaded). Select your firmware from the list.
-
-There are two action buttons available: **Lock and flash now**, and **Lock and flash on reset**. Both options involve "locking" a device to a firmware version. This will force the device to download and run the desired firmware version. Once the device receives and runs that firmware, it will not receive any more OTA updates even if a new firmware version is released. **Lock and flash now** will trigger an immediate OTA of the device to the desired firmware version (only available if the device is currently online). **Lock and flash on reset** will only trigger the OTA the next time the device comes online. If you do not have physical access to the device, it may be a good idea to flash on reset to avoid disrupting any current firmware running on the device.
-
-![Lock a device](/assets/images/lock-firmware-version.png)
-
-Once at least one device is successfully running your new firmware, you will now have the ability to release that version of firmware back on the Firmware page. Get into the habit of following this process as you continue to iterate and prepare new versions of firmware for your product!
 
 
 ## Mismatched Product IDs
