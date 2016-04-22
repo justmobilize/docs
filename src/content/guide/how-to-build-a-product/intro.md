@@ -2,7 +2,7 @@
 title: Introduction
 columns: two
 template: guide.hbs
-order: 1
+order: 100
 ---
 
 # {{title}}

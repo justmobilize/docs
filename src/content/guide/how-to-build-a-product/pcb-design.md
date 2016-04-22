@@ -2,7 +2,7 @@
 title: Designing your own PCB
 columns: two
 template: guide.hbs
-order: 2
+order: 200
 ---
 
 # Designing your own PCB

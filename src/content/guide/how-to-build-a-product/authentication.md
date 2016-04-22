@@ -2,7 +2,7 @@
 title: Authentication & Security
 columns: two
 template: guide.hbs
-order: 4
+order: 800
 ---
 
 # {{title}}
