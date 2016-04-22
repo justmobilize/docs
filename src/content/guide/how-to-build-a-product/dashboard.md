@@ -148,8 +148,7 @@ There are four main sections to the configuration page: *Overview*, *Working wit
 ![Configuration page](/assets/images/configure-page.png)
 <p class="caption">The configuration page will identify key decisions you will need to make before manufacturing</p>
 
-## Your Product ID
-
+## Your Product ID 
 When you created your product, a unique numeric ID was assigned to it. This small piece of information is *very, very important* to you as a product creator, and it will be used countless times during the development and manufacturing process for your product. You will be able to find your product's ID at any time in the navigation bar when viewing information about your product:
 
 ![A new product](/assets/images/product-id.png)
